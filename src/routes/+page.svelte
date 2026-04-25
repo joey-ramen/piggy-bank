@@ -56,9 +56,9 @@
       <p class="error">{data.error}</p>
     {:else}
       <p class="summary-text">
-        Saved: <span>{formatCurrency(summary.saved)}</span>
+        <span>{formatCurrency(summary.saved)}</span>
         &nbsp;/&nbsp;
-        <span>{formatCurrency(summary.total)}</span> total
+        <span>{formatCurrency(summary.total)}</span>
       </p>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" style="width: {percent.toFixed(2)}%"></div>
