@@ -124,8 +124,9 @@
     background-color: #fff5f8;
     color: #5a3d4a;
     margin: 0;
-    padding: 0;
+    padding: 0 0.75rem;
     min-height: 100dvh;
+    overflow-x: hidden;
   }
 
   :global(h1, h2) { font-family: 'Fredoka One', cursive; margin: 0; }
@@ -236,6 +237,7 @@
 
   .summary-box {
     max-width: 750px;
+    width: 100%;
     margin: 1.5rem auto;
     background: #fff0f5;
     border: 2px solid #ffb6c1;
@@ -281,8 +283,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
     max-width: 750px;
+    width: 100%;
     margin: 0 auto 3rem;
-    padding: 0 1rem;
   }
 
   @media (max-width: 600px) {
