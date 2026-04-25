@@ -56,9 +56,9 @@
       <p class="error">{data.error}</p>
     {:else}
       <p class="summary-text">
-        <span>{formatCurrency(summary.saved)}</span>
+        Saved: <span>{formatCurrency(summary.saved)}</span>
         &nbsp;/&nbsp;
-        <span>{formatCurrency(summary.total)}</span>
+        <span>{formatCurrency(summary.total)}</span> total
       </p>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" style="width: {percent.toFixed(2)}%"></div>
@@ -120,7 +120,6 @@
   :global(*, *::before, *::after) { box-sizing: border-box; }
 
   :global(html) {
-    overflow-x: hidden;
     height: 100%;
   }
 
@@ -129,10 +128,8 @@
     background-color: #fff5f8;
     color: #5a3d4a;
     margin: 0;
-    padding: 0 0.75rem;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    overscroll-behavior-y: contain;
+    padding: 0;
+    min-height: 100%;
   }
 
   :global(h1, h2) { font-family: 'Fredoka One', cursive; margin: 0; }
@@ -143,7 +140,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100dvh;
+    min-height: 100%;
     gap: 0.75rem;
     padding: 2rem;
   }
@@ -243,7 +240,6 @@
 
   .summary-box {
     max-width: 750px;
-    width: 100%;
     margin: 1.5rem auto;
     background: #fff0f5;
     border: 2px solid #ffb6c1;
@@ -289,8 +285,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
     max-width: 750px;
-    width: 100%;
     margin: 0 auto 3rem;
+    padding: 0 1rem;
   }
 
   @media (max-width: 600px) {

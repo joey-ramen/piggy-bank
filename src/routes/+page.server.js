@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { SHEET_ID, GOOGLE_API_KEY, PIGGY_PIN } from '$env/static/private';
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 
@@ -7,7 +7,7 @@ function parseNumber(str) {
 }
 
 async function fetchRange(range) {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${env.SHEET_ID}/values/${encodeURIComponent(range)}?key=${env.GOOGLE_API_KEY}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?key=${GOOGLE_API_KEY}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Sheets API error ${res.status} for range "${range}"`);
   const json = await res.json();
@@ -65,7 +65,7 @@ export const actions = {
     const formData = await request.formData();
     const pin = formData.get('pin');
 
-    if (pin !== env.PIGGY_PIN) {
+    if (pin !== PIGGY_PIN) {
       return fail(401, { incorrect: true });
     }
 
