@@ -125,7 +125,7 @@
     color: #5a3d4a;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   :global(h1, h2) { font-family: 'Fredoka One', cursive; margin: 0; }
@@ -136,7 +136,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     gap: 0.75rem;
     padding: 2rem;
   }
@@ -235,7 +235,7 @@
   }
 
   .summary-box {
-    max-width: 480px;
+    max-width: 750px;
     margin: 1.5rem auto;
     background: #fff0f5;
     border: 2px solid #ffb6c1;
