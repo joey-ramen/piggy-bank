@@ -14,15 +14,13 @@ async function fetchRange(range) {
 
 export async function load() {
   try {
-    const [savedRows, wishlistTotalRows, incomeRows, wishlistRows] = await Promise.all([
+    const [savedRows, incomeRows, wishlistRows] = await Promise.all([
       fetchRange('piggy_bank!B2'),
-      fetchRange('piggy_bank!B3'),
       fetchRange('piggy_bank!A6:B8'),
       fetchRange('piggy_bank!A12:B'),
     ]);
 
-    const saved        = parseNumber((savedRows[0]         || [])[0]);
-    const wishlistTotal = parseNumber((wishlistTotalRows[0] || [])[0]);
+    const saved = parseNumber((savedRows[0] || [])[0]);
 
     const income = incomeRows.map(([description, amount]) => ({
       description,
@@ -33,6 +31,8 @@ export async function load() {
       item,
       price: parseNumber(price),
     }));
+
+    const wishlistTotal = wishlist.reduce((sum, row) => sum + row.price, 0);
 
     return { summary: { saved, total: wishlistTotal }, income, wishlist };
 

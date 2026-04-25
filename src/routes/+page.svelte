@@ -76,12 +76,12 @@
           {#each income as row}
             <tr>
               <td>{row.description}</td>
-              <td>{formatCurrency(row.amount)}</td>
+              <td class="amount-cell">{formatCurrency(row.amount)}</td>
             </tr>
           {/each}
           <tr class="total-row">
             <td>Total</td>
-            <td>{formatCurrency(incomeTotal)}</td>
+            <td class="amount-cell">{formatCurrency(incomeTotal)}</td>
           </tr>
         {/if}
       </tbody>
@@ -102,9 +102,13 @@
           {#each wishlist as row}
             <tr>
               <td>{row.item}</td>
-              <td>{formatCurrency(row.price)}</td>
+              <td class="amount-cell">{formatCurrency(row.price)}</td>
             </tr>
           {/each}
+          <tr class="total-row">
+            <td>Total</td>
+            <td class="amount-cell">{formatCurrency(summary.total)}</td>
+          </tr>
         {/if}
       </tbody>
     </table>
@@ -196,7 +200,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
-    max-width: 900px;
+    max-width: 750px;
     margin: 0 auto;
   }
 
@@ -244,6 +248,10 @@
   tr:last-child td { border-bottom: none; }
   tbody tr:nth-child(even) { background: rgba(255, 240, 245, 0.6); }
   tbody tr:hover { background: #ffe8f0; }
+
+  .amount-cell {
+    text-align: right;
+  }
 
   .total-row td {
     font-weight: 700;
