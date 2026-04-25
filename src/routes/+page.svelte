@@ -119,6 +119,11 @@
 <style>
   :global(*, *::before, *::after) { box-sizing: border-box; }
 
+  :global(html) {
+    overflow-x: hidden;
+    height: 100%;
+  }
+
   :global(body) {
     font-family: 'Nunito', sans-serif;
     background-color: #fff5f8;
@@ -127,6 +132,7 @@
     padding: 0 0.75rem;
     min-height: 100dvh;
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
   }
 
   :global(h1, h2) { font-family: 'Fredoka One', cursive; margin: 0; }
