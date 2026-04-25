@@ -22,25 +22,7 @@
 <!-- ── PIN Screen ──────────────────────────────────────────────────────────── -->
 {#if !data.authenticated}
   <div class="gate">
-    <svg viewBox="0 0 200 200" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="52" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(-20, 52, 62)" />
-      <ellipse cx="52" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(-20, 52, 64)" />
-      <ellipse cx="148" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(20, 148, 62)" />
-      <ellipse cx="148" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(20, 148, 64)" />
-      <circle cx="100" cy="115" r="80" fill="#ffb6c1" />
-      <circle cx="62" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-      <circle cx="138" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-      <circle cx="76" cy="100" r="14" fill="white" />
-      <circle cx="78" cy="101" r="7" fill="#3d2b1f" />
-      <circle cx="81" cy="98" r="2.5" fill="white" />
-      <circle cx="124" cy="100" r="14" fill="white" />
-      <circle cx="126" cy="101" r="7" fill="#3d2b1f" />
-      <circle cx="129" cy="98" r="2.5" fill="white" />
-      <ellipse cx="100" cy="140" rx="36" ry="26" fill="#f48fb1" />
-      <ellipse cx="88" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-      <ellipse cx="112" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-      <path d="M 82 158 Q 100 172 118 158" stroke="#c2185b" stroke-width="3" fill="none" stroke-linecap="round" />
-    </svg>
+    <img src="/piggy-bank.png" alt="Piggy bank" class="pig-img" />
 
     <h1 class="gate-title">My Piggy Bank</h1>
     <p class="gate-subtitle">Enter your secret PIN</p>
@@ -65,25 +47,7 @@
 <!-- ── Main Content ────────────────────────────────────────────────────────── -->
 {:else}
   <header class="pig-header">
-    <svg id="pig-face" viewBox="0 0 200 200" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="52" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(-20, 52, 62)" />
-      <ellipse cx="52" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(-20, 52, 64)" />
-      <ellipse cx="148" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(20, 148, 62)" />
-      <ellipse cx="148" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(20, 148, 64)" />
-      <circle cx="100" cy="115" r="80" fill="#ffb6c1" />
-      <circle cx="62" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-      <circle cx="138" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-      <circle cx="76" cy="100" r="14" fill="white" />
-      <circle cx="78" cy="101" r="7" fill="#3d2b1f" />
-      <circle cx="81" cy="98" r="2.5" fill="white" />
-      <circle cx="124" cy="100" r="14" fill="white" />
-      <circle cx="126" cy="101" r="7" fill="#3d2b1f" />
-      <circle cx="129" cy="98" r="2.5" fill="white" />
-      <ellipse cx="100" cy="140" rx="36" ry="26" fill="#f48fb1" />
-      <ellipse cx="88" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-      <ellipse cx="112" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-      <path d="M 82 158 Q 100 172 118 158" stroke="#c2185b" stroke-width="3" fill="none" stroke-linecap="round" />
-    </svg>
+    <img src="/piggy-bank.png" alt="Piggy bank" class="pig-img" />
     <h1 class="app-title">My Piggy Bank</h1>
   </header>
 
@@ -253,12 +217,16 @@
     gap: 0.6rem;
   }
 
-  #pig-face {
+  .pig-img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
     filter: drop-shadow(0 6px 14px rgba(255, 100, 140, 0.25));
     transition: transform 0.2s ease;
   }
 
-  #pig-face:hover { transform: scale(1.05) rotate(-2deg); }
+  .pig-img:hover { transform: scale(1.05) rotate(-2deg); }
+
 
   .app-title {
     font-size: 2.4rem;
