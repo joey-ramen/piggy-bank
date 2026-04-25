@@ -1,120 +1,156 @@
 <script>
-  export let data;
+  import { enhance } from '$app/forms';
 
-  const { summary, income, wishlist, error } = data;
+  export let data;
+  export let form;
 
   function formatCurrency(n) {
     return 'Rp ' + Number(n).toLocaleString('id-ID');
   }
 
-  const percent = summary.total > 0
-    ? Math.min((summary.saved / summary.total) * 100, 100)
-    : 0;
-
-  const incomeTotal = income.reduce((sum, row) => sum + row.amount, 0);
+  $: summary = data.summary ?? { saved: 0, total: 0 };
+  $: income = data.income ?? [];
+  $: wishlist = data.wishlist ?? [];
+  $: percent = summary.total > 0 ? Math.min((summary.saved / summary.total) * 100, 100) : 0;
+  $: incomeTotal = income.reduce((sum, row) => sum + row.amount, 0);
 </script>
 
 <svelte:head>
   <title>My Piggy Bank</title>
 </svelte:head>
 
-<!-- Header -->
-<header class="pig-header">
-  <svg id="pig-face" viewBox="0 0 200 200" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="52" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(-20, 52, 62)" />
-    <ellipse cx="52" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(-20, 52, 64)" />
-    <ellipse cx="148" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(20, 148, 62)" />
-    <ellipse cx="148" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(20, 148, 64)" />
-    <circle cx="100" cy="115" r="80" fill="#ffb6c1" />
-    <circle cx="62" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-    <circle cx="138" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
-    <circle cx="76" cy="100" r="14" fill="white" />
-    <circle cx="78" cy="101" r="7" fill="#3d2b1f" />
-    <circle cx="81" cy="98" r="2.5" fill="white" />
-    <circle cx="124" cy="100" r="14" fill="white" />
-    <circle cx="126" cy="101" r="7" fill="#3d2b1f" />
-    <circle cx="129" cy="98" r="2.5" fill="white" />
-    <ellipse cx="100" cy="140" rx="36" ry="26" fill="#f48fb1" />
-    <ellipse cx="88" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-    <ellipse cx="112" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
-    <path d="M 82 158 Q 100 172 118 158" stroke="#c2185b" stroke-width="3" fill="none" stroke-linecap="round" />
-  </svg>
-  <h1 class="app-title">My Piggy Bank</h1>
-</header>
+<!-- ── PIN Screen ──────────────────────────────────────────────────────────── -->
+{#if !data.authenticated}
+  <div class="gate">
+    <svg viewBox="0 0 200 200" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="52" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(-20, 52, 62)" />
+      <ellipse cx="52" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(-20, 52, 64)" />
+      <ellipse cx="148" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(20, 148, 62)" />
+      <ellipse cx="148" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(20, 148, 64)" />
+      <circle cx="100" cy="115" r="80" fill="#ffb6c1" />
+      <circle cx="62" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
+      <circle cx="138" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
+      <circle cx="76" cy="100" r="14" fill="white" />
+      <circle cx="78" cy="101" r="7" fill="#3d2b1f" />
+      <circle cx="81" cy="98" r="2.5" fill="white" />
+      <circle cx="124" cy="100" r="14" fill="white" />
+      <circle cx="126" cy="101" r="7" fill="#3d2b1f" />
+      <circle cx="129" cy="98" r="2.5" fill="white" />
+      <ellipse cx="100" cy="140" rx="36" ry="26" fill="#f48fb1" />
+      <ellipse cx="88" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
+      <ellipse cx="112" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
+      <path d="M 82 158 Q 100 172 118 158" stroke="#c2185b" stroke-width="3" fill="none" stroke-linecap="round" />
+    </svg>
 
-<!-- Summary Box -->
-<section class="summary-box">
-  {#if error}
-    <p class="error">{error}</p>
-  {:else}
-    <p class="summary-text">
-      Saved: <span>{formatCurrency(summary.saved)}</span>
-      &nbsp;/&nbsp;
-      <span>{formatCurrency(summary.total)}</span> total
-    </p>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" style="width: {percent.toFixed(2)}%"></div>
-    </div>
-    <p class="progress-label">{percent.toFixed(0)}% of wishlist goal</p>
-  {/if}
-</section>
+    <h1 class="gate-title">My Piggy Bank</h1>
+    <p class="gate-subtitle">Enter your secret PIN</p>
 
-<!-- Panels -->
-<main class="panels">
+    <form method="POST" use:enhance>
+      <input
+        type="password"
+        name="pin"
+        inputmode="numeric"
+        placeholder="••••"
+        maxlength="10"
+        autocomplete="current-password"
+        autofocus
+      />
+      {#if form?.incorrect}
+        <p class="pin-error">Wrong PIN, try again!</p>
+      {/if}
+      <button type="submit" class="btn-open">Open!</button>
+    </form>
+  </div>
 
-  <!-- Income -->
-  <section class="panel">
-    <h2>Income</h2>
-    <table>
-      <thead>
-        <tr><th>Description</th><th>Amount</th></tr>
-      </thead>
-      <tbody>
-        {#if income.length === 0}
-          <tr><td colspan="2" class="empty">No income yet!</td></tr>
-        {:else}
-          {#each income as row}
-            <tr>
-              <td>{row.description}</td>
-              <td class="amount-cell">{formatCurrency(row.amount)}</td>
-            </tr>
-          {/each}
-          <tr class="total-row">
-            <td>Total</td>
-            <td class="amount-cell">{formatCurrency(incomeTotal)}</td>
-          </tr>
-        {/if}
-      </tbody>
-    </table>
+<!-- ── Main Content ────────────────────────────────────────────────────────── -->
+{:else}
+  <header class="pig-header">
+    <svg id="pig-face" viewBox="0 0 200 200" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="52" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(-20, 52, 62)" />
+      <ellipse cx="52" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(-20, 52, 64)" />
+      <ellipse cx="148" cy="62" rx="28" ry="36" fill="#f9a8c9" transform="rotate(20, 148, 62)" />
+      <ellipse cx="148" cy="64" rx="16" ry="22" fill="#ffc8dc" transform="rotate(20, 148, 64)" />
+      <circle cx="100" cy="115" r="80" fill="#ffb6c1" />
+      <circle cx="62" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
+      <circle cx="138" cy="138" r="18" fill="#ff9bb3" opacity="0.45" />
+      <circle cx="76" cy="100" r="14" fill="white" />
+      <circle cx="78" cy="101" r="7" fill="#3d2b1f" />
+      <circle cx="81" cy="98" r="2.5" fill="white" />
+      <circle cx="124" cy="100" r="14" fill="white" />
+      <circle cx="126" cy="101" r="7" fill="#3d2b1f" />
+      <circle cx="129" cy="98" r="2.5" fill="white" />
+      <ellipse cx="100" cy="140" rx="36" ry="26" fill="#f48fb1" />
+      <ellipse cx="88" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
+      <ellipse cx="112" cy="142" rx="7" ry="5" fill="#c2185b" opacity="0.6" />
+      <path d="M 82 158 Q 100 172 118 158" stroke="#c2185b" stroke-width="3" fill="none" stroke-linecap="round" />
+    </svg>
+    <h1 class="app-title">My Piggy Bank</h1>
+  </header>
+
+  <section class="summary-box">
+    {#if data.error}
+      <p class="error">{data.error}</p>
+    {:else}
+      <p class="summary-text">
+        Saved: <span>{formatCurrency(summary.saved)}</span>
+        &nbsp;/&nbsp;
+        <span>{formatCurrency(summary.total)}</span> total
+      </p>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: {percent.toFixed(2)}%"></div>
+      </div>
+      <p class="progress-label">{percent.toFixed(0)}% of wishlist goal</p>
+    {/if}
   </section>
 
-  <!-- Wishlist -->
-  <section class="panel">
-    <h2>Wishlist</h2>
-    <table>
-      <thead>
-        <tr><th>Item</th><th>Price</th></tr>
-      </thead>
-      <tbody>
-        {#if wishlist.length === 0}
-          <tr><td colspan="2" class="empty">Wishlist is empty!</td></tr>
-        {:else}
-          {#each wishlist as row}
-            <tr>
-              <td>{row.item}</td>
-              <td class="amount-cell">{formatCurrency(row.price)}</td>
+  <main class="panels">
+    <section class="panel">
+      <h2>Income</h2>
+      <table>
+        <thead><tr><th>Description</th><th>Amount</th></tr></thead>
+        <tbody>
+          {#if income.length === 0}
+            <tr><td colspan="2" class="empty">No income yet!</td></tr>
+          {:else}
+            {#each income as row}
+              <tr>
+                <td>{row.description}</td>
+                <td class="amount-cell">{formatCurrency(row.amount)}</td>
+              </tr>
+            {/each}
+            <tr class="total-row">
+              <td>Total</td>
+              <td class="amount-cell">{formatCurrency(incomeTotal)}</td>
             </tr>
-          {/each}
-          <tr class="total-row">
-            <td>Total</td>
-            <td class="amount-cell">{formatCurrency(summary.total)}</td>
-          </tr>
-        {/if}
-      </tbody>
-    </table>
-  </section>
+          {/if}
+        </tbody>
+      </table>
+    </section>
 
-</main>
+    <section class="panel">
+      <h2>Wishlist</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Price</th></tr></thead>
+        <tbody>
+          {#if wishlist.length === 0}
+            <tr><td colspan="2" class="empty">Wishlist is empty!</td></tr>
+          {:else}
+            {#each wishlist as row}
+              <tr>
+                <td>{row.item}</td>
+                <td class="amount-cell">{formatCurrency(row.price)}</td>
+              </tr>
+            {/each}
+            <tr class="total-row">
+              <td>Total</td>
+              <td class="amount-cell">{formatCurrency(summary.total)}</td>
+            </tr>
+          {/if}
+        </tbody>
+      </table>
+    </section>
+  </main>
+{/if}
 
 <style>
   :global(*, *::before, *::after) { box-sizing: border-box; }
@@ -124,13 +160,91 @@
     background-color: #fff5f8;
     color: #5a3d4a;
     margin: 0;
-    padding: 1rem 1rem 3rem;
+    padding: 0;
     min-height: 100vh;
   }
 
   :global(h1, h2) { font-family: 'Fredoka One', cursive; margin: 0; }
 
-  /* Header */
+  /* ── Gate (PIN + Welcome screens) ── */
+  .gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 0.75rem;
+    padding: 2rem;
+  }
+
+  .gate-title {
+    font-size: 2.2rem;
+    color: #e75480;
+    letter-spacing: 1px;
+  }
+
+  .gate-subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: #b05070;
+  }
+
+  .gate form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+
+  .gate input[type="password"] {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.4em;
+    text-align: center;
+    width: 180px;
+    padding: 0.6rem 1rem;
+    border: 2px solid #ffb6c1;
+    border-radius: 14px;
+    background: white;
+    color: #5a3d4a;
+    outline: none;
+  }
+
+  .gate input[type="password"]:focus {
+    border-color: #e75480;
+    box-shadow: 0 0 0 3px rgba(231, 84, 128, 0.15);
+  }
+
+  .pin-error {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #e75480;
+    font-weight: 700;
+  }
+
+  .btn-open {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #ff85a1, #ff4d79);
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 0.7rem 2.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 77, 121, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    margin-top: 0.25rem;
+  }
+
+  .btn-open:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(255, 77, 121, 0.45);
+  }
+
+  .btn-open:active { transform: scale(0.97); }
+
+  /* ── Main content ── */
   .pig-header {
     display: flex;
     flex-direction: column;
@@ -152,7 +266,6 @@
     letter-spacing: 1px;
   }
 
-  /* Summary */
   .summary-box {
     max-width: 480px;
     margin: 1.5rem auto;
@@ -195,13 +308,13 @@
 
   .error { color: red; font-size: 0.9rem; }
 
-  /* Panels */
   .panels {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
     max-width: 750px;
-    margin: 0 auto;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
   }
 
   @media (max-width: 600px) {
@@ -222,7 +335,6 @@
     margin-bottom: 0.9rem;
   }
 
-  /* Tables */
   table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 
   th {
@@ -249,9 +361,7 @@
   tbody tr:nth-child(even) { background: rgba(255, 240, 245, 0.6); }
   tbody tr:hover { background: #ffe8f0; }
 
-  .amount-cell {
-    text-align: right;
-  }
+  .amount-cell { text-align: right; }
 
   .total-row td {
     font-weight: 700;
