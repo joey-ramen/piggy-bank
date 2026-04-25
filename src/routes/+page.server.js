@@ -1,4 +1,6 @@
-import { SHEET_ID, GOOGLE_API_KEY, PIGGY_PIN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
+
+const { SHEET_ID, GOOGLE_API_KEY, PIGGY_PIN } = env;
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 
